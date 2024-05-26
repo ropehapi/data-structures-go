@@ -7,6 +7,11 @@ type List struct {
 	Tail *Node
 }
 
+func (l *List) Prepend(p Person) {
+	node := &Node{Value: p, Next: l.Head}
+	l.Head = node
+}
+
 func (l *List) Append(p Person) {
 	node := &Node{Value: p}
 
@@ -19,6 +24,28 @@ func (l *List) Append(p Person) {
 	}
 
 	l.Tail = node
+}
+
+func (l *List) InsertAtGivenPosition(p Person, position int) {
+	node := &Node{Value: p}
+
+	if position == 1 {
+		node.Next = l.Head
+		l.Head = node
+		return
+	}
+
+	previous := l.Head
+	count := 1
+
+	for count < position-1 {
+		previous = previous.Next
+		count++
+	}
+
+	current := previous.Next
+	node.Next = current
+	previous.Next = node
 }
 
 func (l *List) Search(name string) (person Person) {
@@ -59,6 +86,29 @@ func (l *List) Delete(name string) {
 	if l.Tail == node {
 		l.Tail = prev
 	}
+}
+
+func (l *List) DeleteAtGivenPosition(position int) {
+	if position <= 0 {
+		return
+	}
+
+	if position == 1 {
+		l.Head = l.Head.Next
+		return
+	}
+
+	count := 1
+	previous := l.Head
+
+	for count < position-1 {
+		previous = previous.Next
+		count++
+	}
+
+	current := previous.Next
+	previous.Next = current.Next
+	current = nil
 }
 
 func (l *List) Display() {
